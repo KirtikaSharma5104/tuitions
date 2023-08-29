@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>KishanTuitions - Find Tutors</title>
+  <link rel="stylesheet" href="tuitions.css">
+</head>
+<body>
+  <header>
+    <h1>Kishan Tuitions</h1>
+    <nav>
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Tutors</a></li>
+      </ul>
+    </nav>
+  </header>
+  
+  <main id="app">
+    <section class="search">
+      <h2>Find Your Tutor</h2>
+      <form @submit.prevent="searchTutors">
+        <label for="subject">Subject:</label>
+        <input v-model="search.subject" type="text" id="subject" name="subject">
+        <label for="location">Location:</label>
+        <input v-model="search.location" type="text" id="location" name="location">
+        <button type="submit">Search</button>
+      </form>
+    </section>
+
+    <section class="signup">
+      <h2>Sign Up</h2>
+      <form @submit.prevent="signup">
+        <label for="signup-email">Email:</label>
+        <input v-model="signupData.email" type="email" id="signup-email" required>
+        <label for="signup-password">Password:</label>
+        <input v-model="signupData.password" type="password" id="signup-password" required>
+        <button type="submit">Sign Up</button>
+      </form>
+    </section>
+  
+    <section class="login">
+      <h2>Log In</h2>
+      <form @submit.prevent="login">
+        <label for="login-email">Email:</label>
+        <input v-model="loginData.email" type="email" id="login-email" required>
+        <label for="login-password">Password:</label>
+        <input v-model="loginData.password" type="password" id="login-password" required>
+        <button type="submit">Log In</button>
+      </form>
+    </section>
+    
+    <section class="tutor-listings">
+      <h2>Available Tutors</h2>
+      <ul class="tutor-list">
+        <li v-for="tutor in filteredTutors" :key="tutor.id" class="tutor">
+          <h3>{{ tutor.name }}</h3>
+          <p>Subject: {{ tutor.subject }}</p>
+          <p>Location: {{ tutor.location }}</p>
+          <p>Rate: {{ tutor.rate }}/hour</p>
+        </li>
+      </ul>
+      <p v-if="filteredTutors.length === 0">No tutors found.</p>
+    </section>
+  </main>
+  
+  <footer>
+    <p>&copy; 2023 EduConnect</p>
+  </footer>
+
+  <script src="https://unpkg.com/vue@3.2.6/dist/vue.global.js"></script>
+  <script>
+    const app = Vue.createApp({
+      data() {
+        return {
+          search: {
+            subject: '',
+            location: ''
+          },
+          tutors: [
+            { id: 1, name: 'Kirtika', subject: 'Mathematics', location: 'Watergarden, Country', rate: 50 },
+            { id: 2, name: 'Saksham', subject: 'English', location: 'Point Cook, Country', rate: 30 },
+            { id: 3, name: 'Jashan', subject: 'Science', location: 'Rockbank, Country', rate: 40 },
+            { id: 4, name: 'Jahnvi', subject: 'English', location: 'Rockbank, Country', rate: 30 },
+            { id: 5, name: 'Yash', subject: 'Mathematics', location: 'Ambala, Country', rate: 35 },
+          ],
+          signupData: { email: '', password: '' },
+          loginData: { email: '', password: '' }
+        };
+      },
+      computed: {
+        filteredTutors() {
+          return this.tutors.filter(tutor => {
+            return (
+              tutor.subject.toLowerCase().includes(this.search.subject.toLowerCase()) &&
+              tutor.location.toLowerCase().includes(this.search.location.toLowerCase())
+            );
+          });
+        }
+      },
+      methods: {
+        searchTutors() {
+          // Empty method for now, the filtering is done via computed property
+        },
+        signup() {
+          // Send signupData to the server using an API call
+          console.log('Signing up:', this.signupData);
+        },
+        login() {
+          // Send loginData to the server for authentication using an API call
+          console.log('Logging in:', this.loginData);
+        }
+      }
+    });
+
+    app.mount('#app');
+  </script>
+</body>
+</html>
